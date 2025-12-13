@@ -1,0 +1,1319 @@
+<!DOCTYPE html>
+<html lang="lt">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>HS Checker — Personal Toolkit (LT/EN/RU)</title>
+
+  <style>
+    :root{
+      --bg:#f5f7fb;
+      --card:#ffffff;
+      --txt:#0f172a;
+      --muted:#64748b;
+      --border:#e2e8f0;
+      --accent:#2563eb;
+      --accent-soft:#dbeafe;
+      --ok:#16a34a;
+      --warn:#b45309;
+      --no:#b91c1c;
+      --danger:#b91c1c;
+    }
+    *{box-sizing:border-box}
+    body{
+      font-family:system-ui,-apple-system,BlinkMacSystemFont,"Inter",Arial,sans-serif;
+      background:var(--bg);
+      color:var(--txt);
+      margin:0;
+    }
+    .wrap{
+      max-width:1200px;
+      margin:0 auto;
+      padding:20px;
+    }
+    .app-header{
+      display:flex;
+      justify-content:space-between;
+      align-items:center;
+      margin-bottom:12px;
+    }
+    .app-title{
+      font-size:20px;
+      font-weight:700;
+      margin:0;
+    }
+    .app-sub{
+      margin:2px 0 0 0;
+      font-size:13px;
+      color:var(--muted);
+    }
+    .lang{
+      display:flex;
+      gap:8px;
+      align-items:center;
+      font-size:13px;
+      color:var(--muted);
+    }
+    .lang button{
+      border:1px solid var(--border);
+      background:#fff;
+      padding:5px 10px;
+      border-radius:999px;
+      font-weight:600;
+      cursor:pointer;
+      font-size:12px;
+    }
+    .lang button.active{
+      background:#111827;
+      color:#fff;
+      border-color:#111827;
+    }
+    .layout{
+      display:grid;
+      grid-template-columns:290px minmax(0,1.7fr) minmax(260px,1fr);
+      gap:16px;
+    }
+    .card{
+      background:var(--card);
+      border-radius:16px;
+      box-shadow:0 18px 45px rgba(15,23,42,.08);
+      padding:16px 18px 18px;
+      border:1px solid rgba(148,163,184,.25);
+    }
+    label{
+      display:block;
+      font-size:12px;
+      font-weight:600;
+      margin:8px 0 4px 2px;
+      color:#0f172a;
+    }
+    textarea,input,select,button{
+      width:100%;
+      padding:9px 11px;
+      border:1px solid var(--border);
+      border-radius:10px;
+      background:#fff;
+      font-size:13px;
+      font-family:inherit;
+    }
+    textarea{min-height:100px;resize:vertical;}
+    .input-small{font-size:12px;}
+    .muted{color:var(--muted);font-size:12px;}
+    .section-title{
+      font-size:13px;
+      font-weight:700;
+      margin:4px 0 4px 0;
+      color:#0f172a;
+      display:flex;
+      justify-content:space-between;
+      align-items:center;
+      gap:8px;
+    }
+    .section-title small{font-weight:400;font-size:11px;color:var(--muted);}
+    .pill{
+      display:inline-block;
+      padding:4px 9px;
+      border-radius:999px;
+      border:1px solid var(--border);
+      background:#fff;
+      font-size:11px;
+      cursor:pointer;
+      white-space:nowrap;
+    }
+    .btn-primary{
+      background:var(--accent);
+      color:#fff;
+      border:none;
+      font-weight:600;
+      cursor:pointer;
+      font-size:13px;
+    }
+    .btn-primary:hover{background:#1d4ed8;}
+    .btn-ghost{
+      background:#fff;
+      border:1px solid var(--border);
+      font-size:12px;
+      cursor:pointer;
+    }
+    .btn-danger{
+      background:#fff;
+      border:1px solid rgba(248,113,113,.7);
+      color:#b91c1c;
+      font-size:11px;
+      cursor:pointer;
+    }
+    .actions{
+      display:flex;
+      flex-wrap:wrap;
+      gap:8px;
+      align-items:center;
+      margin-top:8px;
+      margin-bottom:4px;
+    }
+    table{
+      width:100%;
+      border-collapse:collapse;
+      margin-top:10px;
+      font-size:13px;
+    }
+    th,td{
+      border:1px solid #e5e7eb;
+      padding:7px 8px;
+      text-align:left;
+    }
+    th{
+      background:#f8fafc;
+      font-weight:600;
+      font-size:12px;
+      color:#0f172a;
+    }
+    .badge{
+      display:inline-block;
+      padding:3px 9px;
+      border-radius:999px;
+      font-size:11px;
+      font-weight:700;
+      margin-right:6px;
+    }
+    .b-ok{
+      color:var(--ok);
+      border:1px solid rgba(22,163,74,.35);
+      background:rgba(22,163,74,.08);
+    }
+    .b-warn{
+      color:var(--warn);
+      border:1px solid rgba(180,83,9,.35);
+      background:rgba(180,83,9,.08);
+    }
+    .b-no{
+      color:var(--no);
+      border:1px solid rgba(185,28,28,.35);
+      background:rgba(185,28,28,.08);
+    }
+    .mrn-row{
+      display:flex;
+      gap:8px;
+      flex-wrap:wrap;
+      margin-top:4px;
+    }
+    .mrn-row input{flex:1 1 180px;}
+    .mrn-row button{flex:0 0 auto;font-size:11px;}
+    .history{margin-top:10px;}
+    .history ul{
+      margin:4px 0 0 0;
+      padding-left:16px;
+      font-size:11px;
+      color:#334155;
+      max-height:130px;
+      overflow:auto;
+    }
+    .history li{
+      cursor:pointer;
+      padding:2px 0;
+    }
+    .history li:hover{text-decoration:underline;}
+    #replyPreview{
+      margin-top:6px;
+      padding:10px 11px;
+      background:#f9fafb;
+      border-radius:10px;
+      border:1px solid var(--border);
+      white-space:pre-line;
+      font-size:13px;
+      min-height:140px;
+    }
+    .mode-toggle{
+      display:flex;
+      gap:6px;
+      margin-top:4px;
+      flex-wrap:wrap;
+    }
+    .mode-btn{
+      padding:4px 10px;
+      border-radius:999px;
+      border:1px solid var(--border);
+      font-size:11px;
+      cursor:pointer;
+      background:#fff;
+    }
+    .mode-btn.active{
+      background:var(--accent-soft);
+      border-color:var(--accent);
+      color:#1e3a8a;
+      font-weight:600;
+    }
+    .codes-error{
+      border-color:rgba(239,68,68,.8);
+      box-shadow:0 0 0 1px rgba(248,113,113,.4);
+    }
+    .codes-stats{
+      margin-top:4px;
+      font-size:11px;
+    }
+    .codes-stats span{margin-right:10px;}
+    #status_label{
+      font-size:11px;
+      padding:2px 8px;
+      border-radius:999px;
+      border:1px solid var(--border);
+      background:#f9fafb;
+      color:#6b7280;
+    }
+    #status_label.loading{
+      border-color:#bfdbfe;
+      background:#eff6ff;
+      color:#1d4ed8;
+    }
+    #status_label.ready{
+      border-color:#bbf7d0;
+      background:#ecfdf5;
+      color:#15803d;
+    }
+    #status_label.empty{
+      border-color:#e5e7eb;
+      background:#f9fafb;
+      color:#6b7280;
+    }
+    #summary{
+      margin-top:8px;
+      padding:8px 10px;
+      border-radius:10px;
+      background:#f9fafb;
+      border:1px dashed var(--border);
+      font-size:12px;
+      white-space:pre-line;
+    }
+    #details{
+      margin-top:8px;
+      padding:8px 10px;
+      border-radius:10px;
+      background:#f9fafb;
+      border:1px solid var(--border);
+      font-size:12px;
+      max-height:180px;
+      overflow:auto;
+      white-space:pre-line;
+    }
+    footer{
+      margin-top:12px;
+      color:var(--muted);
+      font-size:11px;
+      text-align:right;
+    }
+    @media (max-width:900px){
+      .layout{
+        grid-template-columns:1fr;
+      }
+    }
+  </style>
+
+  <!-- Papildomas stilius README modalui (PRIDĖTA) -->
+  <style>
+    .modal-backdrop{
+      position:fixed;
+      inset:0;
+      background:rgba(15,23,42,0.55);
+      display:none;
+      justify-content:center;
+      align-items:center;
+      padding:20px;
+      z-index:9999;
+    }
+    .modal-backdrop.active{
+      display:flex;
+    }
+    .modal{
+      background:#fff;
+      border-radius:16px;
+      max-width:720px;
+      width:100%;
+      max-height:90vh;
+      overflow:auto;
+      padding:24px 28px;
+      box-shadow:0 20px 60px rgba(15,23,42,.35);
+      border:1px solid rgba(148,163,184,.25);
+      animation:fadeIn .25s ease;
+    }
+    @keyframes fadeIn{
+      from{opacity:0; transform:translateY(8px);}
+      to{opacity:1; transform:translateY(0);}
+    }
+    .modal h2{
+      margin-top:0;
+      font-size:20px;
+      font-weight:700;
+      color:#0f172a;
+    }
+    .modal h3{
+      margin-top:16px;
+      font-size:15px;
+      font-weight:600;
+      color:#0f172a;
+    }
+    .modal p,
+    .modal li{
+      font-size:14px;
+      line-height:1.55;
+      color:#334155;
+    }
+    .modal hr{
+      border:none;
+      border-top:1px solid #e5e7eb;
+      margin:18px 0;
+    }
+    .modal-close{
+      margin-top:16px;
+      padding:9px 16px;
+      border-radius:10px;
+      background:var(--accent);
+      color:#fff;
+      border:none;
+      cursor:pointer;
+      font-weight:600;
+      font-size:13px;
+    }
+  </style>
+</head>
+<body>
+  <div class="wrap">
+    <header class="app-header">
+      <div>
+        <h1 class="app-title" id="t_title">HS Checker — Personal Toolkit</h1>
+        <p class="app-sub" id="t_sub">Vienas failas. Daug kodų iškart. Kopijuojami atsakymai klientams.</p>
+      </div>
+      <div class="lang">
+        <span id="t_lang">Kalba</span>
+        <button id="btn_lt" onclick="setLang('lt')" class="active">LT</button>
+        <button id="btn_en" onclick="setLang('en')">EN</button>
+        <button id="btn_ru" onclick="setLang('ru')">RU</button>
+        <!-- PRIDĖTAS README mygtukas -->
+        <button
+          id="btn_readme"
+          class="btn-ghost"
+          onclick="openReadme()"
+          title="Atidaryti projekto aprašymą (README): informacija apie įrankį, jo paskirtį ir naudojimą.">
+          README
+        </button>
+      </div>
+    </header>
+
+    <div class="layout">
+      <!-- Kairė: įvestis -->
+      <section class="card">
+        <div class="section-title">
+          <span id="t_input_section">Įvestis</span>
+          <button class="btn-danger" onclick="resetAll()" id="t_reset_btn">Išvalyti viską</button>
+        </div>
+
+        <label id="l_codes">Įklijuok HS kodus (po vieną eilutėje)</label>
+        <textarea id="codes" placeholder="84715000&#10;271019&#10;85176200"></textarea>
+        <div id="codes_stats" class="codes-stats muted"></div>
+
+        <label id="l_origin">Kilmės šalis</label>
+        <select id="origin">
+          <option value="">—</option>
+          <option value="LT">Lietuva (LT)</option>
+          <option value="EU">ES (bendra)</option>
+          <option value="CN">Kinija (CN)</option>
+          <option value="US">JAV (US)</option>
+          <option value="RU">Rusija (RU)</option>
+          <option value="BY">Baltarusija (BY)</option>
+        </select>
+
+        <label id="l_destination">Tikslinė šalis</label>
+        <select id="destination">
+          <option value="">—</option>
+          <option value="LT">Lietuva (LT)</option>
+          <option value="EU">ES (bendra)</option>
+          <option value="CN">Kinija (CN)</option>
+          <option value="US">JAV (US)</option>
+          <option value="RU">Rusija (RU)</option>
+          <option value="BY">Baltarusija (BY)</option>
+        </select>
+
+        <label id="l_transit">Tranzito šalys (laisvas tekstas)</label>
+        <input id="transit" value="via BY,RU" />
+
+        <label id="l_mode">Režimas</label>
+        <div class="mode-toggle">
+          <button class="mode-btn active" data-mode="import" onclick="setMode('import')" id="btn_mode_import">Importas</button>
+          <button class="mode-btn" data-mode="export" onclick="setMode('export')" id="btn_mode_export">Eksportas</button>
+          <button class="mode-btn" data-mode="transit" onclick="setMode('transit')" id="btn_mode_transit">Tranzitas</button>
+        </div>
+
+        <label id="l_source">Informacinės nuorodos</label>
+        <input id="refs" value="TARIC, LITAR, EU Dual-Use, Russia sanctions" />
+
+        <label id="l_notes">Papildomos pastabos</label>
+        <textarea id="notes" placeholder="Pvz. klientas minėjo IT įrangą, siunčiama į trečiąsias šalis."></textarea>
+
+        <div class="section-title" id="mrn_title_wrap">
+          <span id="t_mrn_title">MRN patikra (ES tranzitas/eksportas)</span>
+        </div>
+
+        <div class="mrn-row">
+          <input id="mrn_input" class="input-small" placeholder="pvz. 19PL3510AFR1XXXXX" />
+          <button class="pill" onclick="openMRN()"><span id="t_mrn_btn">Tikrinti MRN ES portale</span></button>
+        </div>
+
+        <p class="muted" id="t_mrn_hint">
+          Atidaro oficialų Europos Komisijos MRN paieškos puslapį su įvestu MRN (informaciniais tikslais).
+        </p>
+      </section>
+
+      <!-- Centras: analizė -->
+      <section class="card">
+        <div class="section-title">
+          <span id="t_analysis_section">Rizikos analizė ir šaltiniai</span>
+          <span id="status_label" class="empty">Statusas: nėra duomenų</span>
+        </div>
+
+        <p class="muted" id="t_hint">
+          DEMO logika vietoje: rizikingi prefiksai 8471*, 8542*, 8517* ir pan.
+        </p>
+
+        <div class="actions">
+          <button class="btn-primary" id="btn_check" onclick="run()">Tikrinti</button>
+          <button class="btn-ghost" onclick="openLitarForFirst()"><span id="t_litar_btn">LITAR (LT muitinė)</span></button>
+          <button class="btn-ghost" onclick="openTaricForFirst()"><span id="t_taric_btn">UK Tariff / TARIC vaizdas</span></button>
+          <button class="btn-ghost" onclick="openHTSForFirst()"><span id="t_hts_btn">US HTS</span></button>
+          <button class="btn-ghost" onclick="openWCOForFirst()"><span id="t_wco_btn">WCO HS</span></button>
+          <button class="pill" onclick="exportCSV()">CSV</button>
+        </div>
+
+        <div id="summary" class="muted"></div>
+        <div id="out"></div>
+        <div id="details"></div>
+
+        <div class="history">
+          <div class="section-title" id="hist_title_wrap">
+            <span id="t_history_title">Paskutinės paieškos</span>
+          </div>
+
+          <div class="muted" id="t_history_info">
+            Saugoma tik šiame kompiuteryje (naršyklėje).
+          </div>
+
+          <ul id="history_list"></ul>
+        </div>
+      </section>
+
+      <!-- Dešinė: atsakymas klientui -->
+      <section class="card">
+        <div class="section-title" id="reply_title_wrap">
+          <span id="t_reply_section">Atsakymas klientui</span>
+        </div>
+
+        <p class="muted" id="t_reply_hint">
+          Žemiau matysi tekstą, kuris bus nukopijuotas į el. laišką.
+          Gali jį pakoreguoti prieš kopijuodamas.
+        </p>
+
+        <div id="replyPreview" contenteditable="true"></div>
+
+        <div class="actions" style="margin-top:10px;">
+          <button class="btn-primary" onclick="copyReply()">
+            <span id="t_copy">Kopijuoti atsakymą klientui</span>
+          </button>
+
+          <button class="pill" onclick="exportPDF()" id="t_pdf_btn">
+            Eksportuoti kaip PDF (vėliau)
+          </button>
+        </div>
+      </section>
+    </div>
+
+    <footer id="t_footer">
+      Pastaba: DEMO nenaudoja gyvų TARIC/LITAR duomenų. Sprendimai tik demonstraciniai.
+    </footer>
+  </div>
+
+  <!-- README MODALAS SU LT / EN / RU (PRIDĖTA) -->
+  <div id="readmeBackdrop" class="modal-backdrop">
+    <div class="modal">
+      <h2>HS Checker — projekto aprašymas</h2>
+      <p><strong>Autorius:</strong> Donatas Vitėnas</p>
+
+      <h3>🇱🇹 LT</h3>
+      <p>
+        Šis įrankis sukurtas kaip asmeninis projektas portfeliui.
+        Jis leidžia greitai įvesti HS kodus ir gauti preliminarią (DEMO) rizikos analizę,
+        rezultatų lentelę ir automatiškai sugeneruotą atsakymą klientui.
+      </p>
+      <h4>Kaip tai veikia?</h4>
+      <ul>
+        <li>Įveskite HS kodus</li>
+        <li>Paspauskite „Tikrinti“</li>
+        <li>Matysite DEMO analizę, lentelę ir atsakymą klientui</li>
+        <li>Mygtukai leidžia atidaryti LITAR, TARIC, HTS, WCO ir kitus šaltinius</li>
+      </ul>
+      <h4>Kodėl DEMO versija?</h4>
+      <p>
+        Norint gauti tikrus tarifus, dokumentus ir kontrolės informaciją,
+        reikalingas oficialus EPI API raktas. Ši versija skirta mokymuisi ir
+        portfeliui, todėl duomenys pateikiami pagal išplėstinę DEMO logiką.
+      </p>
+      <p><strong>Naudojimas:</strong> Projektas yra nekomercinis, skirtas demonstravimui ir mokymuisi.</p>
+
+      <hr />
+
+      <h3>🇬🇧 EN</h3>
+      <p>
+        This tool was created as a personal portfolio project.
+        It allows users to quickly input HS codes and receive a preliminary (DEMO)
+        risk assessment, a results table, and an automatically generated client response.
+      </p>
+      <h4>How it works</h4>
+      <ul>
+        <li>Enter HS codes</li>
+        <li>Click “Check”</li>
+        <li>The system provides DEMO analysis and a client-ready message</li>
+        <li>Buttons give quick access to LITAR, TARIC, HTS, WCO and other resources</li>
+      </ul>
+      <h4>Why DEMO version?</h4>
+      <p>
+        Accurate tariff and control data require an official EPI API key.
+        This version is intended for learning and demonstration, so the data
+        is based on an extended DEMO logic model.
+      </p>
+      <p><strong>Usage:</strong> Non-commercial, for education and portfolio presentation.</p>
+
+      <hr />
+
+      <h3>🇷🇺 RU</h3>
+      <p>
+        Этот инструмент создан как личный проект для портфолио.
+        Он позволяет быстро вводить HS коды и получать предварительную (DEMO)
+        оценку рисков, таблицу результатов и автоматически сформированный ответ для клиента.
+      </p>
+      <h4>Как это работает</h4>
+      <ul>
+        <li>Введите HS коды</li>
+        <li>Нажмите «Проверить»</li>
+        <li>Система выдаёт DEMO-анализ и текст ответа клиенту</li>
+        <li>Кнопки открывают LITAR, TARIC, HTS, WCO и другие источники</li>
+      </ul>
+      <h4>Почему DEMO-версия?</h4>
+      <p>
+        Для получения точных тарифов и информации о контроле необходим официальный API-ключ EPI.
+        Эта версия предназначена для обучения, поэтому данные основываются на расширенной DEMO-логике.
+      </p>
+      <p><strong>Использование:</strong> Некоммерческий проект для демонстрации и обучения.</p>
+
+      <button type="button" class="modal-close" onclick="closeReadme()">
+        Uždaryti
+      </button>
+    </div>
+  </div>
+
+  <script src="checkHS.js"></script>
+  <script>
+    const $ = id => document.getElementById(id);
+
+    const i18n = {
+      lt:{
+        title:"HS Checker — Personal Toolkit",
+        sub:"Vienas failas. Daug kodų iškart. Kopijuojami atsakymai klientams.",
+        lang:"Kalba",
+        input_section:"Įvestis",
+        analysis_section:"Rizikos analizė ir šaltiniai",
+        reply_section:"Atsakymas klientui",
+        reply_hint:"Žemiau matysi tekstą, kuris bus nukopijuotas į el. laišką. Gali jį pakoreguoti prieš kopijuodamas.",
+        reset_btn:"Išvalyti viską",
+        codes:"Įklijuok HS kodus (po vieną eilutėje)",
+        origin:"Kilmės šalis",
+        destination:"Tikslinė šalis",
+        transit:"Tranzito šalys (laisvas tekstas)",
+        mode:"Režimas",
+        mode_import:"Importas",
+        mode_export:"Eksportas",
+        mode_transit:"Tranzitas",
+        notes:"Papildomos pastabos",
+        source:"Informacinės nuorodos",
+        check:"Tikrinti",
+        copy:"Kopijuoti atsakymą klientui",
+        pdf_btn:"Eksportuoti kaip PDF (vėliau)",
+        hint:"DEMO logika vietoje: rizikingi prefiksai 8471*, 8542*, 8517* ir pan.",
+        history_title:"Paskutinės paieškos",
+        history_info:"Saugoma tik šiame kompiuteryje (naršyklėje).",
+        footer:"Pastaba: DEMO nenaudoja gyvų TARIC/LITAR duomenų. Sprendimai tik demonstraciniai.",
+        allowed:"Leidžiama",
+        restricted:"Tik su leidimu / patikra",
+        prohibited:"Draudžiama",
+        reply_head:"Sveiki, patikrinau Jūsų HS kodus:",
+        reply_tail:"*Pastaba:* Tai vidinė preliminari DEMO patikra. Galutinai sprendžia muitinė / oficialūs šaltiniai.",
+        table_hs:"HS kodas",
+        table_dec:"Sprendimas",
+        table_notes:"Pastabos",
+        placeholder:"84715000\n271019\n85176200",
+        mrn_title:"MRN patikra (ES tranzitas/eksportas)",
+        mrn_btn:"Tikrinti MRN ES portale",
+        mrn_hint:"Atidaro oficialų Europos Komisijos MRN paieškos puslapį su įvestu MRN (informaciniais tikslais).",
+        litar_btn:"LITAR (LT muitinė)",
+        taric_btn:"UK Tariff / TARIC vaizdas",
+        hts_btn:"US HTS",
+        wco_btn:"WCO HS",
+        reply_empty:"Nėra rezultatų.",
+        alert_no_results:"Nėra rezultatų.",
+        alert_copied:"Nukopijuota. Galite įklijuoti į el. laišką.",
+        alert_enter_mrn:"Įveskite MRN kodą.",
+        alert_need_hs:"Pirmiausia įveskite bent vieną teisingą HS kodą (6–8 skaitmenys).",
+        tariff_title:"Tarifai (DEMO):",
+        docs_title:"Dokumentai / kontrolė (DEMO):",
+        sanctions_title:"Sankcijos / apribojimai (DEMO):",
+        explanation_title:"Paaiškinimas (DEMO):",
+        status_empty:"Statusas: nėra duomenų",
+        status_loading:"Statusas: analizuojama…",
+        status_ready:"Statusas: paruošta",
+        status_error:"Statusas: klaida",
+        codes_stats:"Teisingi: {ok} · Klaidingi: {bad} · Dublikatai: {dup}",
+        summary_title:"Greita santrauka:",
+        summary_line:"HS kodų: {count} · leidžiami: {ok} · su leidimu: {rest} · draudžiami: {no}\nDokumentų įrašų (DEMO): {docs} · sankcijų įrašų (DEMO): {san}"
+      },
+      en:{
+        title:"HS Checker — Personal Toolkit",
+        sub:"Single file. Check many codes at once. Copy replies for clients.",
+        lang:"Language",
+        input_section:"Input",
+        analysis_section:"Risk analysis & sources",
+        reply_section:"Reply to client",
+        reply_hint:"Below is the text that will be copied into the email. You can adjust it before copying.",
+        reset_btn:"Clear all",
+        codes:"Paste HS codes (one per line)",
+        origin:"Country of origin",
+        destination:"Destination country",
+        transit:"Transit countries (free text)",
+        mode:"Mode",
+        mode_import:"Import",
+        mode_export:"Export",
+        mode_transit:"Transit",
+        notes:"Additional notes",
+        source:"Reference sources",
+        check:"Check",
+        copy:"Copy reply to client",
+        pdf_btn:"Export as PDF (later)",
+        hint:"Demo logic on page: risky prefixes 8471*, 8542*, 8517*, etc.",
+        history_title:"Recent checks",
+        history_info:"Stored only in this browser (locally).",
+        footer:"Note: DEMO does not use live TARIC/LITAR data.",
+        allowed:"Allowed",
+        restricted:"Permit / manual review",
+        prohibited:"Prohibited",
+        reply_head:"Hello, I checked your HS codes:",
+        reply_tail:"*Note:* This is an internal DEMO check. Final authority is customs / official sources.",
+        table_hs:"HS code",
+        table_dec:"Decision",
+        table_notes:"Notes",
+        placeholder:"84715000\n271019\n85176200",
+        mrn_title:"MRN check (EU transit/export)",
+        mrn_btn:"Check MRN on EU portal",
+        mrn_hint:"Opens the official European Commission MRN search page with the entered MRN (for information only).",
+        litar_btn:"LITAR (LT customs)",
+        taric_btn:"UK Tariff / TARIC view",
+        hts_btn:"US HTS",
+        wco_btn:"WCO HS",
+        reply_empty:"No results.",
+        alert_no_results:"No results.",
+        alert_copied:"Copied. You can paste into an email.",
+        alert_enter_mrn:"Enter MRN.",
+        alert_need_hs:"Please enter at least one valid HS code (6–8 digits) first.",
+        tariff_title:"Tariffs (DEMO):",
+        docs_title:"Documents / control (DEMO):",
+        sanctions_title:"Sanctions / restrictions (DEMO):",
+        explanation_title:"Explanation (DEMO):",
+        status_empty:"Status: no data",
+        status_loading:"Status: analysing…",
+        status_ready:"Status: ready",
+        status_error:"Status: error",
+        codes_stats:"Valid: {ok} · Invalid: {bad} · Duplicates: {dup}",
+        summary_title:"Quick summary:",
+        summary_line:"HS codes: {count} · allowed: {ok} · restricted: {rest} · prohibited: {no}\nDocument entries (DEMO): {docs} · sanctions entries (DEMO): {san}"
+      },
+      ru:{
+        title:"HS Checker — Personal Toolkit",
+        sub:"Один файл. Массовая проверка. Копирование ответа клиенту.",
+        lang:"Язык",
+        input_section:"Ввод данных",
+        analysis_section:"Анализ риска и источники",
+        reply_section:"Ответ клиенту",
+        reply_hint:"Ниже текст, который будет скопирован в письмо. Можно отредактировать перед копированием.",
+        reset_btn:"Очистить всё",
+        codes:"Вставьте HS коды (по одному в строке)",
+        origin:"Страна происхождения",
+        destination:"Страна назначения",
+        transit:"Транзитные страны (произвольный текст)",
+        mode:"Режим",
+        mode_import:"Импорт",
+        mode_export:"Экспорт",
+        mode_transit:"Транзит",
+        notes:"Дополнительные замечания",
+        source:"Справочные источники",
+        check:"Проверить",
+        copy:"Скопировать ответ клиенту",
+        pdf_btn:"Экспорт в PDF (позже)",
+        hint:"Демо-логика на странице: риск-префиксы 8471*, 8542*, 8517* и т.п.",
+        history_title:"Последние проверки",
+        history_info:"Хранится только в этом браузере (локально).",
+        footer:"Примечание: ДЕМО не использует живые данные TARIC/LITAR.",
+        allowed:"Разрешено",
+        restricted:"Требуется разрешение / проверка",
+        prohibited:"Запрещено",
+        reply_head:"Здравствуйте, я проверил ваши HS коды:",
+        reply_tail:"*Примечание:* Это предварительная ДЕМО-проверка. Окончательное решение — таможня / официальные источники.",
+        table_hs:"HS код",
+        table_dec:"Решение",
+        table_notes:"Примечания",
+        placeholder:"84715000\n271019\n85176200",
+        mrn_title:"Проверка MRN (транзит/экспорт ЕС)",
+        mrn_btn:"Проверить MRN на портале ЕС",
+        mrn_hint:"Открывает официальный сайт Еврокомиссии для поиска MRN с введённым номером (только для информации).",
+        litar_btn:"LITAR (таможня Литвы)",
+        taric_btn:"UK Tariff / TARIC",
+        hts_btn:"US HTS",
+        wco_btn:"WCO HS",
+        reply_empty:"Нет результатов.",
+        alert_no_results:"Нет результатов.",
+        alert_copied:"Скопировано. Можно вставить в письмо.",
+        alert_enter_mrn:"Введите номер MRN.",
+        alert_need_hs:"Сначала введите хотя бы один корректный HS код (6–8 цифр).",
+        tariff_title:"Тарифы (ДЕМО):",
+        docs_title:"Документы / контроль (ДЕМО):",
+        sanctions_title:"Санкции / ограничения (ДЕМО):",
+        explanation_title:"Пояснение (ДЕМО):",
+        status_empty:"Статус: нет данных",
+        status_loading:"Статус: анализ…",
+        status_ready:"Статус: готово",
+        status_error:"Статус: ошибка",
+        codes_stats:"Корректные: {ok} · Ошибки: {bad} · Дубликаты: {dup}",
+        summary_title:"Краткое резюме:",
+        summary_line:"Кодов HS: {count} · разрешены: {ok} · с ограничениями: {rest} · запрещены: {no}\nДокументарных записей (ДЕМО): {docs} · санкционных записей (ДЕМО): {san}"
+      }
+    };
+
+    let lang = 'lt';
+    let mode = 'import';
+
+    function setLang(l){
+      lang=l;
+      ['lt','en','ru'].forEach(k => $('btn_'+k).classList.toggle('active', k===l));
+      const t=i18n[l];
+      document.title=t.title;
+      $('t_title').textContent=t.title;
+      $('t_sub').textContent=t.sub;
+      $('t_lang').textContent=t.lang;
+      $('t_input_section').textContent=t.input_section;
+      $('t_analysis_section').textContent=t.analysis_section;
+      $('t_reply_section').textContent=t.reply_section;
+      $('t_reply_hint').textContent=t.reply_hint;
+      $('t_reset_btn').textContent=t.reset_btn;
+      $('l_codes').textContent=t.codes;
+      $('l_origin').textContent=t.origin;
+      $('l_destination').textContent=t.destination;
+      $('l_transit').textContent=t.transit;
+      $('l_mode').textContent=t.mode;
+      $('btn_mode_import').textContent=t.mode_import;
+      $('btn_mode_export').textContent=t.mode_export;
+      $('btn_mode_transit').textContent=t.mode_transit;
+      $('l_source').textContent=t.source;
+      $('l_notes').textContent=t.notes;
+      $('btn_check').textContent=t.check;
+      $('t_hint').textContent=t.hint;
+      $('t_history_title').textContent=t.history_title;
+      $('t_history_info').textContent=t.history_info;
+      $('t_footer').textContent=t.footer;
+      $('t_copy').textContent=t.copy;
+      $('t_pdf_btn').textContent=t.pdf_btn;
+      $('t_mrn_title').textContent=t.mrn_title;
+      $('t_mrn_btn').textContent=t.mrn_btn;
+      $('t_mrn_hint').textContent=t.mrn_hint;
+      $('t_litar_btn').textContent=t.litar_btn;
+      $('t_taric_btn').textContent=t.taric_btn;
+      $('t_hts_btn').textContent=t.hts_btn;
+      $('t_wco_btn').textContent=t.wco_btn;
+      $('codes').placeholder=t.placeholder;
+      setStatus('empty');
+      renderTable([]);
+      $('summary').textContent='';
+      $('details').textContent='';
+      renderReplyPreview();
+      updateCodesStats();
+    }
+
+    function setMode(m){
+      mode=m;
+      document.querySelectorAll('.mode-btn').forEach(btn=>{
+        btn.classList.toggle('active', btn.dataset.mode===m);
+      });
+      renderReplyPreview();
+    }
+
+    function badge(dec){
+      if(dec==='allowed')return '<span class="badge b-ok">ALLOWED</span>';
+      if(dec==='restricted')return '<span class="badge b-warn">RESTRICTED</span>';
+      return '<span class="badge b-no">PROHIBITED</span>';
+    }
+
+    const STRICT={
+      bannedExact:new Set(['870323','870324']),
+      restrictedExact:new Set(['840999','271019','84715000']),
+      riskyPrefixes:['8471','8542','8517']
+    };
+
+    // DEMO meta – vėliau čia pakeisim į API atsakymą
+    function getMetaForHs(hs, decision){
+      const meta = { duty: "0%", vat: "21%", docs: [], sanctions: [], explanation: "" };
+
+      if(hs === '84715000'){
+        meta.duty = "0%";
+        meta.docs = [
+          {code:"C990", name:"Dual-use pre-check (DEMO)", url:"https://eur-lex.europa.eu/"},
+          {code:"Y901", name:"Commercial documentation (DEMO)", url:"https://ec.europa.eu/taxation_customs/"},
+          {code:"LITAR", name:"Lietuvos muitinės info (DEMO)", url:"https://www.lrmuitine.lt/web/guest/verslui/tarifinisreguliavimas/muitaimokesciai"}
+        ];
+        meta.sanctions = [
+          {code:"Reg.833/2014", name:"Russia transit ban (DEMO)", url:"https://eur-lex.europa.eu/"}
+        ];
+        meta.explanation = "IT įranga su galimu dual-use / šifravimo aspektu (DEMO).";
+      } else if(hs === '271019'){
+        meta.duty = "4.7% (DEMO)";
+        meta.docs = [
+          {code:"LITAR", name:"LT tarifai ir reikalavimai (DEMO)", url:"https://www.lrmuitine.lt/web/guest/verslui/tarifinisreguliavimas/muitaimokesciai"}
+        ];
+        meta.sanctions = [
+          {code:"Oil sanctions (DEMO)", name:"Naftos produktų ribojimai", url:"https://eur-lex.europa.eu/"}
+        ];
+        meta.explanation = "Naftos produktai – didesnės sankcijų rizikos kategorija (DEMO).";
+      } else if(hs === '85176200'){
+        meta.duty = "0%";
+        meta.docs = [
+          {code:"Standard docs (DEMO)", name:"Standartiniai komerciniai dokumentai", url:"https://ec.europa.eu/taxation_customs/"}
+        ];
+        meta.sanctions = [];
+        meta.explanation = "Telekomunikacijų įranga, dažniausiai žemos rizikos (DEMO).";
+      } else {
+        if(decision === 'prohibited'){
+          meta.sanctions = [{code:"High risk (DEMO)", name:"Gali būti griežti apribojimai", url:"https://eur-lex.europa.eu/"}];
+          meta.explanation = "DEMO: priskirta aukštos rizikos grupei pagal vidinę logiką.";
+        } else if(decision === 'restricted'){
+          meta.docs = [{code:"Check docs (DEMO)", name:"Gali reikėti papildomų leidimų / patikros", url:"https://ec.europa.eu/taxation_customs/"}];
+          meta.explanation = "DEMO: priskirta vidutinės rizikos / tik su leidimu grupei.";
+        } else {
+          meta.explanation = "DEMO: priskirta žemos rizikos / leidžiamų prekių grupei.";
+        }
+      }
+      return meta;
+    }
+
+    function decide(hs){
+      if(STRICT.bannedExact.has(hs))return'prohibited';
+      if(STRICT.restrictedExact.has(hs))return'restricted';
+      if(STRICT.riskyPrefixes.some(p=>hs.startsWith(p)))return'restricted';
+      return'allowed';
+    }
+
+    function setStatus(type){
+      const t=i18n[lang];
+      const el=$('status_label');
+      el.classList.remove('loading','ready','empty');
+      if(type==='loading'){
+        el.classList.add('loading');
+        el.textContent=t.status_loading;
+      }else if(type==='ready'){
+        el.classList.add('ready');
+        el.textContent=t.status_ready;
+      }else if(type==='error'){
+        el.classList.add('empty');
+        el.textContent=t.status_error;
+      }else{
+        el.classList.add('empty');
+        el.textContent=t.status_empty;
+      }
+    }
+
+    function run(){
+      const lines=$('codes').value.split(/\r?\n/).map(s=>s.trim()).filter(Boolean);
+      setStatus('loading');
+      const rows=[];
+      const metaByHs = {};
+      const seen = new Set();
+      for(const raw of lines){
+        const m=raw.match(/^\d{6,8}$/);
+        if(!m){
+          rows.push({hs:raw,decision:'-',note:'Invalid'});
+          continue;
+        }
+        const hs=m[0];
+        const d=decide(hs);
+        let note = '';
+        if(seen.has(hs)) note='duplicate';
+        seen.add(hs);
+        rows.push({hs,decision:d,note});
+        metaByHs[hs] = getMetaForHs(hs, d);
+      }
+      window._lastRows = rows;
+      window._lastMeta = metaByHs;
+      renderTable(rows);
+      renderSummary(rows, metaByHs);
+      renderDetails(rows, metaByHs);
+      renderReplyPreview();
+      saveHistory(lines);
+      updateCodesStats();
+      setStatus(rows.length ? 'ready' : 'empty');
+    }
+
+    function renderTable(rows){
+      const t=i18n[lang];
+      if(!rows||!rows.length){
+        $('out').innerHTML='';
+        return;
+      }
+      const trs=rows.map(r=>`
+        <tr>
+          <td>${r.hs}</td>
+          <td>${r.decision==='-'?'-':badge(r.decision)}</td>
+          <td>${r.note||''}</td>
+        </tr>
+      `).join('');
+      $('out').innerHTML=`
+        <table>
+          <thead>
+            <tr>
+              <th>${t.table_hs}</th>
+              <th>${t.table_dec}</th>
+              <th>${t.table_notes}</th>
+            </tr>
+          </thead>
+          <tbody>${trs}</tbody>
+        </table>`;
+    }
+
+    function renderSummary(rows, metaByHs){
+      const t=i18n[lang];
+      if(!rows||!rows.length){
+        $('summary').textContent='';
+        return;
+      }
+      let ok=0, rest=0, no=0;
+      let docs=0, san=0;
+      rows.forEach(r=>{
+        if(r.decision==='allowed') ok++;
+        else if(r.decision==='restricted') rest++;
+        else if(r.decision==='prohibited') no++;
+        const meta = metaByHs[r.hs] || getMetaForHs(r.hs, r.decision);
+        if(meta.docs) docs += meta.docs.length;
+        if(meta.sanctions) san += meta.sanctions.length;
+      });
+      const header = t.summary_title;
+      const line = t.summary_line
+        .replace('{count}', rows.length)
+        .replace('{ok}', ok)
+        .replace('{rest}', rest)
+        .replace('{no}', no)
+        .replace('{docs}', docs)
+        .replace('{san}', san);
+      $('summary').textContent = header + '\n' + line;
+    }
+
+    function renderDetails(rows, metaByHs){
+      const t=i18n[lang];
+      if(!rows||!rows.length){
+        $('details').textContent='';
+        return;
+      }
+      const parts=[];
+      rows.forEach(r=>{
+        if(!r.hs || r.decision==='-') return;
+        const meta=metaByHs[r.hs] || getMetaForHs(r.hs, r.decision);
+        parts.push(`HS ${r.hs}`);
+        parts.push('');
+        parts.push(t.docs_title);
+        if(meta.docs && meta.docs.length){
+          meta.docs.forEach(d=>parts.push(`- ${d.code} — ${d.name} (${d.url})`));
+        }else{
+          parts.push('- (nėra DEMO dokumentų)');
+        }
+        parts.push('');
+        parts.push(t.sanctions_title);
+        if(meta.sanctions && meta.sanctions.length){
+          meta.sanctions.forEach(s=>parts.push(`- ${s.code} — ${s.name} (${s.url})`));
+        }else{
+          parts.push('- (nėra DEMO sankcijų įrašų)');
+        }
+        parts.push('');
+        parts.push('────────────────────────');
+        parts.push('');
+      });
+      $('details').textContent = parts.join('\n');
+    }
+
+    function renderReplyPreview(){
+      const t=i18n[lang];
+      const rows=window._lastRows||[];
+      const metaByHs=window._lastMeta||{};
+      if(!rows.length){
+        $('replyPreview').textContent = t.reply_empty;
+        return;
+      }
+      const origin=$('origin').value || '-';
+      const dest=$('destination').value || '-';
+      const transit=$('transit').value.trim() || '-';
+      const refs=$('refs').value.trim();
+      const notes=$('notes').value.trim();
+      const modeLabel = mode==='import' ? t.mode_import : mode==='export' ? t.mode_export : t.mode_transit;
+
+      const lines = [];
+      lines.push(t.reply_head);
+      lines.push('');
+      lines.push(`Režimas / Mode: ${modeLabel}`);
+      lines.push(`Kilmės šalis / Origin: ${origin}`);
+      lines.push(`Tikslas / Destination: ${dest}`);
+      lines.push(`Tranzitas / Transit: ${transit}`);
+      lines.push('');
+
+      rows.forEach(r=>{
+        if(!r.hs || r.decision==='-') return;
+        const meta = metaByHs[r.hs] || getMetaForHs(r.hs, r.decision);
+        lines.push(`HS ${r.hs}:`);
+        lines.push('');
+        lines.push(t.tariff_title);
+        lines.push(`- Importo muitas (DEMO): ${meta.duty}`);
+        lines.push(`- PVM (DEMO): ${meta.vat}`);
+        lines.push('');
+        lines.push(t.docs_title);
+        if(meta.docs && meta.docs.length){
+          meta.docs.forEach(d=>{
+            lines.push(`- ${d.code} — ${d.name} (${d.url})`);
+          });
+        } else {
+          lines.push('- (nėra DEMO dokumentų)');
+        }
+        lines.push('');
+        lines.push(t.sanctions_title);
+        if(meta.sanctions && meta.sanctions.length){
+          meta.sanctions.forEach(s=>{
+            lines.push(`- ${s.code} — ${s.name} (${s.url})`);
+          });
+        }else{
+          lines.push('- (nėra DEMO sankcijų įrašų)');
+        }
+        lines.push('');
+        lines.push(t.explanation_title);
+        lines.push(meta.explanation || "(DEMO paaiškinimas nėra nustatytas)");
+        lines.push('');
+        lines.push('────────────────────────');
+        lines.push('');
+      });
+
+      if(notes){
+        lines.push('Papildomos pastabos:');
+        lines.push(notes);
+        lines.push('');
+      }
+
+      lines.push(`Šaltiniai/Refs: ${refs}`);
+      lines.push('');
+      lines.push(t.reply_tail);
+
+      $('replyPreview').textContent = lines.join('\n');
+    }
+
+    function copyReply(){
+      const t=i18n[lang];
+      const text = $('replyPreview').textContent.trim();
+      if(!text || text === t.reply_empty){
+        alert(t.alert_no_results);
+        return;
+      }
+      navigator.clipboard.writeText(text)
+        .then(()=>alert(t.alert_copied));
+    }
+
+    function exportPDF(){
+      // placeholder – vėliau bus tikras PDF generatorius
+      alert('PDF eksportas bus pridėtas vėlesnėje versijoje.');
+    }
+
+    function exportCSV(){
+      const rows=window._lastRows||[];
+      const t=i18n[lang];
+      if(!rows.length){
+        alert(t.alert_no_results);
+        return;
+      }
+      const header=['hs','decision','note'];
+      const csv=[header.join(',')].concat(
+        rows.map(r=>[r.hs,r.decision,r.note].map(v=>`${(v||'').replace(/"/g,'""')}`).join(','))
+      ).join('\n');
+      const blob=new Blob([csv],{type:'text/csv'});
+      const a=document.createElement('a');
+      a.href=URL.createObjectURL(blob);
+      a.download='hs-check-results.csv';
+      a.click();
+    }
+
+    function saveHistory(lines){
+      try{
+        const key='hs_tool_history';
+        const now=new Date().toISOString();
+        const old=JSON.parse(localStorage.getItem(key)||'[]').slice(0,49);
+        old.unshift({ts:now,codes:lines});
+        localStorage.setItem(key, JSON.stringify(old));
+        renderHistory();
+      }catch(e){}
+    }
+
+    function renderHistory(){
+      const key='hs_tool_history';
+      let arr=[];
+      try{arr=JSON.parse(localStorage.getItem(key)||'[]');}catch(e){arr=[];}
+      const ul=$('history_list');
+      ul.innerHTML='';
+      arr.slice(0,10).forEach(item=>{
+        const li=document.createElement('li');
+        li.textContent=`${new Date(item.ts).toLocaleString()} — ${item.codes.join(', ')}`;
+        li.onclick=()=>{
+          $('codes').value=item.codes.join('\n');
+          run();
+        };
+        ul.appendChild(li);
+      });
+    }
+
+    function openMRN(){
+      const t=i18n[lang];
+      const mrn=$('mrn_input').value.trim();
+      if(!mrn){
+        alert(t.alert_enter_mrn);
+        return;
+      }
+      const url="https://ec.europa.eu/taxation_customs/dds2/mrn/mrn_home.jsp?Lang=lt&MRN="+encodeURIComponent(mrn);
+      window.open(url,"_blank");
+    }
+
+    function getFirstValidHS(){
+      const lines=$('codes').value.split(/\r?\n/).map(s=>s.trim()).filter(Boolean);
+      for(const raw of lines){
+        const m=raw.match(/^\d{6,8}$/);
+        if(m) return m[0];
+      }
+      return null;
+    }
+
+    function requireHSOrAlert(){
+      const hs=getFirstValidHS();
+      const t=i18n[lang];
+      if(!hs){
+        alert(t.alert_need_hs);
+        return null;
+      }
+      return hs;
+    }
+
+    function openLitarForFirst(){
+      const hs=requireHSOrAlert();
+      if(hs===null) return;
+      const url="https://www.lrmuitine.lt/web/guest/verslui/tarifinisreguliavimas/muitaimokesciai";
+      window.open(url,"_blank");
+    }
+
+    function openTaricForFirst(){
+      const hs=requireHSOrAlert();
+      if(hs===null) return;
+      const url="https://www.trade-tariff.service.gov.uk/commodities/"+encodeURIComponent(hs);
+      window.open(url,"_blank");
+    }
+
+    function openHTSForFirst(){
+      const hs=requireHSOrAlert();
+      if(hs===null) return;
+      const url="https://hts.usitc.gov/?query="+encodeURIComponent(hs);
+      window.open(url,"_blank");
+    }
+
+    function openWCOForFirst(){
+      const hs=requireHSOrAlert();
+      if(hs===null) return;
+      const url="https://www.wcotradetools.org/en";
+      window.open(url,"_blank");
+    }
+
+    function resetAll(){
+      $('codes').value='';
+      $('origin').value='';
+      $('destination').value='';
+      $('transit').value='';
+      $('refs').value='TARIC, LITAR, EU Dual-Use, Russia sanctions';
+      $('notes').value='';
+      $('mrn_input').value='';
+      window._lastRows=[];
+      window._lastMeta={};
+      renderTable([]);
+      $('summary').textContent='';
+      $('details').textContent='';
+      renderReplyPreview();
+      updateCodesStats();
+      setStatus('empty');
+    }
+
+    function updateCodesStats(){
+      const t = i18n[lang];
+      const lines = $('codes').value.split(/\r?\n/).map(s=>s.trim()).filter(Boolean);
+      let ok=0,bad=0;
+      const seen=new Set();
+      let dup=0;
+      lines.forEach(raw=>{
+        const m=raw.match(/^\d{6,8}$/);
+        if(m){
+          ok++;
+          if(seen.has(m[0])) dup++;
+          seen.add(m[0]);
+        }else{
+          bad++;
+        }
+      });
+      const txt = t.codes_stats
+        .replace('{ok}', ok)
+        .replace('{bad}', bad)
+        .replace('{dup}', dup);
+      $('codes_stats').textContent = lines.length ? txt : '';
+      $('codes').classList.toggle('codes-error', bad>0);
+    }
+
+    // README modal valdymas (PRIDĖTA)
+    function openReadme(){
+      const el = document.getElementById('readmeBackdrop');
+      if(el) el.classList.add('active');
+    }
+
+    function closeReadme(){
+      const el = document.getElementById('readmeBackdrop');
+      if(el) el.classList.remove('active');
+    }
+
+    document.addEventListener('click', (e)=>{
+      const backdrop = document.getElementById('readmeBackdrop');
+      if(!backdrop) return;
+      if(e.target === backdrop){
+        closeReadme();
+      }
+    });
+
+    document.addEventListener('keydown', (e)=>{
+      if(e.key === 'Escape'){
+        closeReadme();
+      }
+    });
+
+    document.addEventListener('DOMContentLoaded', ()=>{
+      setLang('lt');
+      renderHistory();
+      $('codes').addEventListener('input', ()=>{
+        updateCodesStats();
+      });
+      ['origin','destination','transit','refs','notes'].forEach(id=>{
+        $(id).addEventListener('input', renderReplyPreview);
+      });
+    });
+  </script>
+</body>
+</html>
